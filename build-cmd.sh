@@ -12,17 +12,16 @@ OPENSSL_URL="http://www.openssl.org/source/$OPENSSL_ARCHIVE"
 OPENSSL_MD5="a5cb5f6c3d11affb387ecf7a997cac0c"  # for openssl-0.9.8j.tar.gz"
 
 if [ "$OSTYPE" = "cygwin" ] ; then
-    # *HACK windows env vars are crap -brad
-    export autobuild="$(cygpath -u $AUTOBUILD.cmd)"
+    export AUTOBUILD="$(cygpath -u $AUTOBUILD)"
 fi
 
-if [ -z "$autobuild" ] ; then 
+if [ -z "$AUTOBUILD" ] ; then 
     fail
 fi
 
 # load autbuild provided shell functions and variables
 set +x
-eval "$("$autobuild" source_environment)"
+eval "$("$AUTOBUILD" source_environment)"
 set -x
 
 fetch_archive "$OPENSSL_URL" "$OPENSSL_ARCHIVE" "$OPENSSL_MD5"
@@ -32,6 +31,8 @@ top="$(pwd)"
 cd "$OPENSSL_SOURCE_DIR"
     case "$AUTOBUILD_PLATFORM" in
         "windows")
+			load_vsvars
+
             # disable idea cypher per Phoenix's patent concerns (DEV-22827)
             perl Configure no-idea "VC-WIN32"
 
@@ -46,14 +47,15 @@ cd "$OPENSSL_SOURCE_DIR"
             mkdir -p stage/lib/debug
             mkdir -p stage/lib/release
 
-            cp "out32dll/libeay32.lib" "stage/lib/debug" \ || exit 1
-            cp "out32dll/ssleay32.lib" "stage/lib/debug" \ || exit 1
-            cp "out32dll/libeay32.lib" "stage/lib/release" \ || exit 1
-            cp "out32dll/ssleay32.lib" "stage/lib/release" \ || exit 1
+            cp "out32dll/libeay32.lib" "stage/lib/debug"
+            cp "out32dll/ssleay32.lib" "stage/lib/debug"
+            cp "out32dll/libeay32.lib" "stage/lib/release"
+            cp "out32dll/ssleay32.lib" "stage/lib/release"
 
-            cp out32dll/{libeay32,ssleay32}.dll "stage/lib/debug"   || exit 1
-            cp out32dll/{libeay32,ssleay32}.dll "stage/lib/release" || exit 1
+            cp out32dll/{libeay32,ssleay32}.dll "stage/lib/debug"
+            cp out32dll/{libeay32,ssleay32}.dll "stage/lib/release"
 
+            mkdir -p stage/include/openssl
             # *NOTE: the -L is important because they're symlinks in the openssl dist.
             cp -r -L "include/openssl" "stage/include/openssl"
         ;;
