@@ -232,7 +232,7 @@ pushd "$OPENSSL_SOURCE_DIR"
             export LDFLAGS="-Wl,-headerpad_max_install_names"
 
             # Debug first
-            ./Configure zlib threads no-idea shared no-gost 386 'debug-darwin-i386-cc' \
+            ./Configure zlib threads no-idea shared no-gost 'debug-darwin-i386-cc' \
                 --prefix="$stage" --libdir="lib/debug" --openssldir="share" \
                 --with-zlib-include="$stage/packages/include/zlib" --with-zlib-lib="$stage/packages/lib/debug"
             make depend
@@ -257,7 +257,7 @@ pushd "$OPENSSL_SOURCE_DIR"
             make clean
 
             # Release last
-            ./Configure zlib threads no-idea shared no-gost 386 'darwin-i386-cc' \
+            ./Configure zlib threads no-idea shared no-gost 'darwin-i386-cc' \
                 --prefix="$stage" --libdir="lib/release" --openssldir="share" \
                 --with-zlib-include="$stage/packages/include/zlib" --with-zlib-lib="$stage/packages/lib/release"
             make depend
