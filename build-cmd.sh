@@ -363,6 +363,83 @@ pushd "$OPENSSL_SOURCE_DIR"
             # make writable here than fix the viewer packaging.
             chmod u+w "$stage"/lib/{release,debug}/lib{crypto,ssl}.so*
         ;;
+        "linux64")
+            # Linux build environment at Linden comes pre-polluted with stuff that can
+            # seriously damage 3rd-party builds.  Environmental garbage you can expect
+            # includes:
+            #
+            #    DISTCC_POTENTIAL_HOSTS     arch           root        CXXFLAGS
+            #    DISTCC_LOCATION            top            branch      CC
+            #    DISTCC_HOSTS               build_name     suffix      CXX
+            #    LSDISTCC_ARGS              repo           prefix      CFLAGS
+            #    cxx_version                AUTOBUILD      SIGN        CPPFLAGS
+            #
+            # So, clear out bits that shouldn't affect our configure-directed build
+            # but which do nonetheless.
+            #
+            # unset DISTCC_HOSTS CC CXX CFLAGS CPPFLAGS CXXFLAGS
+
+            # Default target to 32-bit
+            opts="${TARGET_OPTS:--m64}"
+
+            # Handle any deliberate platform targeting
+            if [ -z "$TARGET_CPPFLAGS" ]; then
+                # Remove sysroot contamination from build environment
+                unset CPPFLAGS
+            else
+                # Incorporate special pre-processing flags
+                export CPPFLAGS="$TARGET_CPPFLAGS"
+            fi
+            
+            # Force static linkage to libz by moving .sos out of the way
+            trap restore_sos EXIT
+            for solib in "${stage}"/packages/lib/debug/*.so* "${stage}"/packages/lib/release/*.so*; do
+                if [ -f "$solib" ]; then
+                    mv -f "$solib" "$solib".disable
+                fi
+            done
+            
+            # '--libdir' functions a bit different than usual.  Here it names
+            # a part of a directory path, not the entire thing.  Same with
+            # '--openssldir' as well.
+            # "shared" means build shared and static, instead of just static.
+
+            # Debug first
+            CFLAGS="-g -O0" ./Configure zlib threads shared no-idea debug-linux-x86_64 -fno-stack-protector "$opts" \
+                --prefix="$stage" --libdir="lib/debug" --openssldir="share" \
+                --with-zlib-include="$stage/packages/include/zlib" --with-zlib-lib="$stage"/packages/lib/debug/
+            make depend
+            make
+            make install
+
+            # conditionally run unit tests
+            if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+                make test
+            fi
+
+            make clean
+
+            # "shared" means build shared and static, instead of just static.
+            ./Configure zlib threads shared no-idea linux-x86_64 -fno-stack-protector "$opts" \
+                --prefix="$stage" --libdir="lib/release" --openssldir="share" \
+                --with-zlib-include="$stage/packages/include/zlib" --with-zlib-lib="$stage"/packages/lib/release/
+            make depend
+            make
+            make install
+
+            # conditionally run unit tests
+            if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+                make test
+            fi
+
+            make clean
+
+            # By default, 'make install' leaves even the user write bit off.
+            # This causes trouble for us down the road, along about the time
+            # the consuming build tries to strip libraries.  It's easier to
+            # make writable here than fix the viewer packaging.
+            chmod u+w "$stage"/lib/{release,debug}/lib{crypto,ssl}.so*
+        ;;
     esac
     mkdir -p "$stage/LICENSES"
     cp -a LICENSE "$stage/LICENSES/openssl.txt"
