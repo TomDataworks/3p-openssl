@@ -213,14 +213,8 @@ pushd "$OPENSSL_SOURCE_DIR"
                 fi
             done
 
-            # Select SDK with full path.  This shouldn't have much effect on this
-            # build but adding to establish a consistent pattern.
-            #
-            # sdk=/Developer/SDKs/MacOSX10.6.sdk/
-            # sdk=/Developer/SDKs/MacOSX10.7.sdk/
-            # sdk=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/
-            sdk=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/
-            
+            DEVELOPER="$(xcode-select -print-path)"
+            sdk="${DEVELOPER}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk" 
             # Keep min version back at 10.5 if you are using the
             # old llqtwebkit repo which builds on 10.5 systems.
             # At 10.6, zlib will start using __bzero() which doesn't
