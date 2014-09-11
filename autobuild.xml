@@ -270,7 +270,7 @@
       <key>source_directory</key>
       <string>openssl</string>
       <key>version</key>
-      <string>1.0.1i</string>
+      <string>1.0.1h</string>
     </map>
     <key>type</key>
     <string>autobuild</string>
