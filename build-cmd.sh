@@ -230,7 +230,7 @@ pushd "$OPENSSL_SOURCE_DIR"
                 --with-zlib-include="$stage/packages/include/zlib" --with-zlib-lib="$stage/packages/lib/debug"
             make depend
             make
-            make install
+            make install_sw
 
             # Modify .dylib path information.  Do this after install
             # to the copies rather than built or the dylib's will be
@@ -255,7 +255,7 @@ pushd "$OPENSSL_SOURCE_DIR"
                 --with-zlib-include="$stage/packages/include/zlib" --with-zlib-lib="$stage/packages/lib/release"
             make depend
             make
-            make install
+            make install_sw
 
             # Modify .dylib path information
             crypto_stage_name="${stage}/lib/release/${crypto_target_name}"
