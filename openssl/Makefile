@@ -69,7 +69,7 @@ ARFLAGS=
 AR= ar $(ARFLAGS) r
 RANLIB= /usr/bin/ranlib
 NM= nm
-PERL= /usr/bin/perl
+PERL= /opt/local/bin/perl5
 TAR= tar
 TARFLAGS= --no-recursion --record-size=10240
 MAKEDEPPROG=makedepend
