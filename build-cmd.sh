@@ -7,6 +7,7 @@ set -x
 # make errors fatal
 set -e
 
+OPENSSL_VERSION="1.0.1j"
 OPENSSL_SOURCE_DIR="openssl"
 
 if [ -z "$AUTOBUILD" ] ; then 
@@ -46,6 +47,8 @@ restore_dylibs ()
 top="$(pwd)"
 stage="$top/stage"
 [ -f "$stage"/packages/include/zlib/zlib.h ] || fail "You haven't installed packages yet."
+
+echo "${OPENSSL_VERSION}" > "${stage}/VERSION.txt"
 
 pushd "$OPENSSL_SOURCE_DIR"
     case "$AUTOBUILD_PLATFORM" in
@@ -192,7 +195,7 @@ pushd "$OPENSSL_SOURCE_DIR"
             # These files are symlinks in the SSL dist but just show up as text files
             # on windows that contain a string to their source.  So run some perl to
             # copy the right files over.
-            perl ../copy-windows-links.pl "include/openssl" "$stage/include/openssl"
+            perl ../copy-windows-links.pl "include/openssl" $(cygpath -w "$stage/include/openssl")
         ;;
 
         "darwin")
