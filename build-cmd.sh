@@ -7,7 +7,7 @@ set -x
 # make errors fatal
 set -e
 
-OPENSSL_VERSION="1.0.1j"
+OPENSSL_VERSION="1.0.1m"
 OPENSSL_SOURCE_DIR="openssl"
 
 if [ -z "$AUTOBUILD" ] ; then 
@@ -222,13 +222,13 @@ pushd "$OPENSSL_SOURCE_DIR"
             # old llqtwebkit repo which builds on 10.5 systems.
             # At 10.6, zlib will start using __bzero() which doesn't
             # exist there.
-            opts="${TARGET_OPTS:-arch i386 -iwithsysroot $sdk -mmacosx-version-min=10.7}"
+            opts="${TARGET_OPTS:-arch x86_64 -iwithsysroot $sdk -mmacosx-version-min=10.7}"
             export CFLAGS="$opts -gdwarf-2"
             export CXXFLAGS="$opts -gdwarf-2"
             export LDFLAGS="-Wl,-headerpad_max_install_names"
 
             # Debug first
-            ./Configure zlib threads no-idea shared no-gost 'debug-darwin-i386-cc' \
+            ./Configure zlib threads no-idea shared no-gost 'debug-darwin64-x86_64-cc' \
                 --prefix="$stage" --libdir="lib/debug" --openssldir="share" \
                 --with-zlib-include="$stage/packages/include/zlib" --with-zlib-lib="$stage/packages/lib/debug"
             make depend
@@ -253,7 +253,7 @@ pushd "$OPENSSL_SOURCE_DIR"
             make clean
 
             # Release last
-            ./Configure zlib threads no-idea shared no-gost 'darwin-i386-cc' \
+            ./Configure zlib threads no-idea shared no-gost 'darwin64-x86_64-cc' \
                 --prefix="$stage" --libdir="lib/release" --openssldir="share" \
                 --with-zlib-include="$stage/packages/include/zlib" --with-zlib-lib="$stage/packages/lib/release"
             make depend
