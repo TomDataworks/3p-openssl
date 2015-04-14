@@ -292,14 +292,15 @@ pushd "$OPENSSL_SOURCE_DIR"
             #
             # unset DISTCC_HOSTS CC CXX CFLAGS CPPFLAGS CXXFLAGS
 
-            # Prefer gcc-4.6 if available.
-            if [ -x /usr/bin/gcc-4.6 -a -x /usr/bin/g++-4.6 ]; then
-                export CC=/usr/bin/gcc-4.6
-                export CXX=/usr/bin/g++-4.6
+            # Prefer gcc-4.8 if available.
+            if [ -x /usr/bin/gcc-4.8 -a -x /usr/bin/g++-4.8 ]; then
+                export CC=/usr/bin/gcc-4.8
+                export CXX=/usr/bin/g++-4.8
             fi
 
             # Default target to 32-bit
             opts="${TARGET_OPTS:--m32}"
+            HARDENED="-fstack-protector-strong -D_FORTIFY_SOURCE=2"
 
             # Handle any deliberate platform targeting
             if [ -z "$TARGET_CPPFLAGS" ]; then
@@ -324,7 +325,7 @@ pushd "$OPENSSL_SOURCE_DIR"
             # "shared" means build shared and static, instead of just static.
 
             # Debug first
-            CFLAGS="-g -O0" ./Configure zlib threads shared no-idea debug-linux-generic32 -fno-stack-protector "$opts" \
+            ./Configure zlib threads shared no-idea debug-linux-generic32 "$opts -0g -g" \
                 --prefix="$stage" --libdir="lib/debug" --openssldir="share" \
                 --with-zlib-include="$stage/packages/include/zlib" --with-zlib-lib="$stage"/packages/lib/debug/
             make depend
@@ -339,7 +340,7 @@ pushd "$OPENSSL_SOURCE_DIR"
             make clean
 
             # "shared" means build shared and static, instead of just static.
-            ./Configure zlib threads shared no-idea linux-generic32 -fno-stack-protector "$opts" \
+            ./Configure zlib threads shared no-idea linux-generic32 "$opts $HARDENED" \
                 --prefix="$stage" --libdir="lib/release" --openssldir="share" \
                 --with-zlib-include="$stage/packages/include/zlib" --with-zlib-lib="$stage"/packages/lib/release/
             make depend
@@ -375,8 +376,15 @@ pushd "$OPENSSL_SOURCE_DIR"
             #
             # unset DISTCC_HOSTS CC CXX CFLAGS CPPFLAGS CXXFLAGS
 
-            # Default target to 32-bit
+            # Prefer gcc-4.8 if available.
+            if [ -x /usr/bin/gcc-4.8 -a -x /usr/bin/g++-4.8 ]; then
+                export CC=/usr/bin/gcc-4.8
+                export CXX=/usr/bin/g++-4.8
+            fi
+
+            # Default target to 64-bit
             opts="${TARGET_OPTS:--m64}"
+            HARDENED="-fstack-protector-strong -D_FORTIFY_SOURCE=2"
 
             # Handle any deliberate platform targeting
             if [ -z "$TARGET_CPPFLAGS" ]; then
@@ -401,7 +409,7 @@ pushd "$OPENSSL_SOURCE_DIR"
             # "shared" means build shared and static, instead of just static.
 
             # Debug first
-            CFLAGS="-g -O0" ./Configure zlib threads shared no-idea debug-linux-x86_64 -fno-stack-protector "$opts" \
+            ./Configure zlib threads shared no-idea debug-linux-x86_64 "$opts -Og -g" \
                 --prefix="$stage" --libdir="lib/debug" --openssldir="share" \
                 --with-zlib-include="$stage/packages/include/zlib" --with-zlib-lib="$stage"/packages/lib/debug/
             make depend
@@ -416,7 +424,7 @@ pushd "$OPENSSL_SOURCE_DIR"
             make clean
 
             # "shared" means build shared and static, instead of just static.
-            ./Configure zlib threads shared no-idea linux-x86_64 -fno-stack-protector "$opts" \
+            ./Configure zlib threads shared no-idea linux-x86_64 "$opts -O3 -g $HARDENED" \
                 --prefix="$stage" --libdir="lib/release" --openssldir="share" \
                 --with-zlib-include="$stage/packages/include/zlib" --with-zlib-lib="$stage"/packages/lib/release/
             make depend
