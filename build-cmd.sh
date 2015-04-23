@@ -65,7 +65,7 @@ pushd "$OPENSSL_SOURCE_DIR"
             # c-string without escaping characters.  This fails and confuses the compiler
             # so we use the 'NO_WINDOWS_BRAINDEATH' define.  Would be an ideal use case
             # for raw strings.
-            perl Configure debug-VC-WIN32 no-asm no-idea zlib threads -DNO_WINDOWS_BRAINDEATH \
+            perl Configure debug-VC-WIN32 no-idea zlib threads -DNO_WINDOWS_BRAINDEATH \
                 --with-zlib-include="$(cygpath -w "$stage/packages/include/zlib")" \
                 --with-zlib-lib="$(cygpath -w "$stage/packages/lib/debug/zlibd.lib")"
 
@@ -92,7 +92,7 @@ pushd "$OPENSSL_SOURCE_DIR"
 
             # Release build:
             # disable idea cypher per Phoenix's patent concerns (DEV-22827)
-            perl Configure VC-WIN32 no-asm no-idea zlib threads -DNO_WINDOWS_BRAINDEATH \
+            perl Configure VC-WIN32 no-idea zlib threads -DNO_WINDOWS_BRAINDEATH \
                 --with-zlib-include="$(cygpath -w "$stage/packages/include/zlib")" \
                 --with-zlib-lib="$(cygpath -w "$stage/packages/lib/release/zlib.lib")"
 
@@ -137,7 +137,7 @@ pushd "$OPENSSL_SOURCE_DIR"
             # c-string without escaping characters.  This fails and confuses the compiler
             # so we use the 'NO_WINDOWS_BRAINDEATH' define.  Would be an ideal use case
             # for raw strings.
-            perl Configure debug-VC-WIN64A no-asm no-idea zlib threads -DNO_WINDOWS_BRAINDEATH \
+            perl Configure debug-VC-WIN64A no-idea zlib threads -DNO_WINDOWS_BRAINDEATH \
                 --with-zlib-include="$(cygpath -w "$stage/packages/include/zlib")" \
                 --with-zlib-lib="$(cygpath -w "$stage/packages/lib/debug/zlibd.lib")"
 
@@ -164,7 +164,7 @@ pushd "$OPENSSL_SOURCE_DIR"
 
             # Release build:
             # disable idea cypher per Phoenix's patent concerns (DEV-22827)
-            perl Configure VC-WIN64A no-asm no-idea zlib threads -DNO_WINDOWS_BRAINDEATH \
+            perl Configure VC-WIN64A no-idea zlib threads -DNO_WINDOWS_BRAINDEATH \
                 --with-zlib-include="$(cygpath -w "$stage/packages/include/zlib")" \
                 --with-zlib-lib="$(cygpath -w "$stage/packages/lib/release/zlib.lib")"
 
