@@ -70,7 +70,7 @@ pushd "$OPENSSL_SOURCE_DIR"
                 --with-zlib-lib="$(cygpath -w "$stage/packages/lib/debug/zlibd.lib")"
 
             # Not using NASM
-            ./ms/do_ms.bat
+            ./ms/do_nasm.bat
 
             nmake -f ms/ntdll.mak
 
@@ -97,7 +97,7 @@ pushd "$OPENSSL_SOURCE_DIR"
                 --with-zlib-lib="$(cygpath -w "$stage/packages/lib/release/zlib.lib")"
 
             # Not using NASM
-            ./ms/do_ms.bat
+            ./ms/do_nasm.bat
 
             nmake -f ms/ntdll.mak
 
@@ -123,7 +123,7 @@ pushd "$OPENSSL_SOURCE_DIR"
             # These files are symlinks in the SSL dist but just show up as text files
             # on windows that contain a string to their source.  So run some perl to
             # copy the right files over.
-            perl ../copy-windows-links.pl "include/openssl" "$stage/include/openssl"
+            perl ../copy-windows-links.pl "include/openssl" $(cygpath -w "$stage/include/openssl")
         ;;
         "windows64")
             load_vsvars
