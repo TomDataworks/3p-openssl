@@ -326,7 +326,7 @@ pushd "$OPENSSL_SOURCE_DIR"
                 --with-zlib-include="$stage/packages/include/zlib" --with-zlib-lib="$stage"/packages/lib/debug/
             make depend
             make
-            make install
+            make install_sw
 
             # conditionally run unit tests
             if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
@@ -341,7 +341,7 @@ pushd "$OPENSSL_SOURCE_DIR"
                 --with-zlib-include="$stage/packages/include/zlib" --with-zlib-lib="$stage"/packages/lib/release/
             make depend
             make
-            make install
+            make install_sw
 
             # conditionally run unit tests
             if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
@@ -410,7 +410,7 @@ pushd "$OPENSSL_SOURCE_DIR"
                 --with-zlib-include="$stage/packages/include/zlib" --with-zlib-lib="$stage"/packages/lib/debug/
             make depend
             make
-            make install
+            make install_sw
 
             # conditionally run unit tests
             if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
@@ -425,7 +425,7 @@ pushd "$OPENSSL_SOURCE_DIR"
                 --with-zlib-include="$stage/packages/include/zlib" --with-zlib-lib="$stage"/packages/lib/release/
             make depend
             make
-            make install
+            make install_sw
 
             # conditionally run unit tests
             if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
