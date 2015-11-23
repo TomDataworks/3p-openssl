@@ -217,7 +217,7 @@ pushd "$OPENSSL_SOURCE_DIR"
             done
 
             DEVELOPER="$(xcode-select -print-path)"
-            sdk="${DEVELOPER}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk" 
+            sdk="${DEVELOPER}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk" 
             opts="${TARGET_OPTS:-arch x86_64 -iwithsysroot $sdk -mmacosx-version-min=10.8}"
             export CFLAGS="$opts -gdwarf-2"
             export CXXFLAGS="$opts -gdwarf-2"
