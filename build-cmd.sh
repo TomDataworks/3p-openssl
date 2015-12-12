@@ -119,11 +119,7 @@ pushd "$OPENSSL_SOURCE_DIR"
 
             # Publish headers
             mkdir -p "$stage/include/openssl"
-
-            # These files are symlinks in the SSL dist but just show up as text files
-            # on windows that contain a string to their source.  So run some perl to
-            # copy the right files over.
-            perl ../copy-windows-links.pl "include/openssl" $(cygpath -w "$stage/include/openssl")
+            cp -a inc32/openssl/*.h "$stage/include/openssl"
         ;;
         "windows64")
             load_vsvars
@@ -191,11 +187,7 @@ pushd "$OPENSSL_SOURCE_DIR"
 
             # Publish headers
             mkdir -p "$stage/include/openssl"
-
-            # These files are symlinks in the SSL dist but just show up as text files
-            # on windows that contain a string to their source.  So run some perl to
-            # copy the right files over.
-            perl ../copy-windows-links.pl "include/openssl" $(cygpath -w "$stage/include/openssl")
+            cp -a inc32/openssl/*.h "$stage/include/openssl"
         ;;
 
         "darwin")
