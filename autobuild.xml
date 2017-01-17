@@ -36,9 +36,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>122acc6a6009a4671dd5eb3a9e302033</string>
+              <string>PACKAGE_DEPS_MD5SUM</string>
               <key>url</key>
-              <string>https://bitbucket.org/alchemyviewer/publiclibs-linux/downloads/zlib-1.2.8-linux-20141125.tar.bz2</string>
+              <string>PACKAGE_DEPS_FILENAME</string>
             </map>
             <key>name</key>
             <string>linux</string>
@@ -179,7 +179,9 @@
           </map>
           <key>manifest</key>
           <array>
+            <string>lib/release/pkgconfig/*.pc</string>
             <string>lib/release/*.a</string>
+            <string>lib/debug/pkgconfig/*.pc</string>
             <string>lib/debug/*.a</string>
           </array>
           <key>name</key>
@@ -202,7 +204,9 @@
           </map>
           <key>manifest</key>
           <array>
+            <string>lib/release/pkgconfig/*.pc</string>
             <string>lib/release/*.a</string>
+            <string>lib/debug/pkgconfig/*.pc</string>
             <string>lib/debug/*.a</string>
           </array>
           <key>name</key>
