@@ -313,7 +313,7 @@ pushd "$OPENSSL_SOURCE_DIR"
             # "shared" means build shared and static, instead of just static.
 
             # Debug first
-            ./Configure zlib threads shared no-idea debug-linux-generic32 "$opts -0g -g" \
+            ./Configure zlib threads shared no-idea debug-linux-generic32 "$opts -g" \
                 --prefix="$stage" --libdir="lib/debug" --openssldir="share" \
                 --with-zlib-include="$stage/packages/include/zlib" --with-zlib-lib="$stage"/packages/lib/debug/
             make depend
